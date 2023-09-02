@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+
+    <script>
+        // funcion asincrónica  para obtener detalles de un usuario por su id
+        const obtenerDetallesUsuario = async (userId) => {
+            const respuesta = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
+
+            // va a verificar si la respuesta de la solicitud HTTP es exitosa
+            if (!respuesta.ok) throw new Error(respuesta.status);
+
+            // Analizar la respuesta JSON y devolverla
+            return await respuesta.json();
+        };
+
+        // funcion asincrónica para mostrar los detalles de un usuario
+        const mostrarDetallesUsuario = async () => {
+            try {
+                // llamar a la función para obtener detalles de un usuario con el id 
+                const detallesUsuario = await obtenerDetallesUsuario(3);
+
+                // obtener el contenedor HTML donde se mostrarán los detalles del usuario
+                const contenedorUsuario = document.getElementById('user-details');
+
+                // actualizar el contenido del contenedor con los detalles del usuario
+                contenedorUsuario.innerHTML = `
+                    <h1>Detalles del Usuario</h1>
+                    <div class="user-details">
+                        <div class="user-detail">
+                            <label>ID:</label> ${detallesUsuario.id}
+                        </div>
+                        <div class="user-detail">
+                            <label>Nombre:</label> ${detallesUsuario.name}
+                        </div>
+                        <div class="user-detail">
+                            <label>Nombre de usuario:</label> ${detallesUsuario.username}
+                        </div>
+                        <div class="user-detail">
+                            <label>Correo electrónico:</label> ${detallesUsuario.email}
+                        </div>
+                        <div class="user-detail">
+                            <label>Teléfono:</label> ${detallesUsuario.phone}
+                        </div>
+                        <div class="user-detail">
+                            <label>Sitio web:</label> ${detallesUsuario.website}
+                        </div>
+                        <div class="user-detail">
+                            <label>Compañía:</label> ${detallesUsuario.company.name}
+                        </div>
+                    </div>
+                `;
+            } catch (err) {
+                // va a manejar cualquier errror que pueda ocurrir
+                console.log('Error:', err.message);
+            }
+        };
+    </script>
+
+
+</head>
+
+<body onload="mostrarDetallesUsuario()">
+    <div class="container" id="user-details"></div>
+</body>
+
+</html>
